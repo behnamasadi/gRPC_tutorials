@@ -10,5 +10,28 @@ FetchContent_Declare(
 #set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
+
+
+
+IF(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/sandbox")
+        ADD_SUBDIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/src/sandbox")
+ENDIF()
+
+
+find_package(protobuf CONFIG REQUIRED)
+
+if(protobuf_VERBOSE)
+  message(STATUS "Using Protocol Buffers ${protobuf_VERSION}")
+endif()
+
+
+MESSAGE(${CMAKE_CURRENT_SOURCE_DIR})
+IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/addressbook.pb.h")
+	add_executable(writing_message src/writing_message.cpp   src/addressbook.pb.cc)
+	target_link_libraries(writing_message)
+ENDIF()
+
+
+
 add_executable(main src/main.cpp)
 target_link_libraries(main grpc++)
